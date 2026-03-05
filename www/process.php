@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/Kaliningrad');
 session_start();
 
 $username = htmlspecialchars($_POST['userName'] ?? ''); 

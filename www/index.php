@@ -1,5 +1,10 @@
 <?php 
+date_default_timezone_set('Europe/Kaliningrad');
 session_start(); 
+require_once 'UserInfo.php';
+$user_info = UserInfo::getInfo();
+$api_data = $_SESSION['api_data'] ?? null;
+$last_visit = $_COOKIE['last_submission'] ?? 'Это ваша первая отправка!';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -32,6 +37,33 @@ session_start();
     </style>
 </head>
 <body>
+
+<div style="border: 1px solid #ccc; padding: 15px; margin: 20px; border-radius: 8px; max-width: 600px;">
+    <h2>Лабораторная работа №4</h2>
+    
+    <p><strong>Ваш IP:</strong> <?= htmlspecialchars($user_info['ip']) ?></p>
+    <p><strong>Браузер:</strong> <?= htmlspecialchars($user_info['user_agent']) ?></p>
+    <p><strong>Последняя отправка:</strong> <?= htmlspecialchars($last_visit) ?></p>
+
+    <hr>
+
+    <h3>Благотворительные организации (API):</h3>
+    <?php if ($api_data): ?>
+        <ul>
+            <?php 
+            $count = 0;
+            foreach ($api_data as $item): 
+                if ($count >= 5) break;
+                $name = $item['name'] ?? $item['value'] ?? $item['FullName'] ?? 'Данные не найдены';
+                echo "<li>" . htmlspecialchars($name) . "</li>";
+                $count++;
+            endforeach; 
+            ?>
+        </ul>
+    <?php else: ?>
+        <p>Отправьте форму, чтобы загрузить данные из API.</p>
+    <?php endif; ?>
+</div>
 
 <div class="container">
     <h2>Главная страница</h2>
