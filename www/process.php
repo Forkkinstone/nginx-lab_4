@@ -27,6 +27,8 @@ $line = $username . ";" . $email . "\n";
 
 file_put_contents("data.txt", $line, FILE_APPEND);
 
+setcookie("last_submission", date('Y-m-d H:i:s'), time() + 3600, "/");
+
 require_once 'ApiClient.php';
 $api = new ApiClient();
 
